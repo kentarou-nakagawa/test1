@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import jsonplaceholder from "./apis/jsonplaceholder";
+import Button from "./components/Button";
+import Resources from "./components/Resources";
+
+const App = () => {
+    const [resources,setResources] = useState([]);
+
+    const getPosts = async () => {
+        try {
+            const posts = await jsonplaceholder.get('/posts');
+            setResources(posts.date);
+        } catch(err){
+            console.log(err);
+        }
+    };
+
+    return (
+        <div className='ui container' style={{marginTop:'30px'}}>
+            <Button onClick={getPosts} color='primary' text='更新'/>
+            <Resources resources={resources}/>
+        </div>
+    );
+};
 
 export default App;
